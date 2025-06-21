@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#3498db">
+    <meta name="theme-color" content="#000000">
     <title>Lafayette Kafeterija - Digital Menu</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,10 +19,8 @@
     <div id="loading-screen" class="loading-screen">
         <div class="loading-content">
             <div class="logo-animation">
-                <img src="images/0b0f7cb7-91db-4c0b-9936-ac1ed5ac2bf4.jpg" alt="Lafayette Kafeterija Logo">
+                <img src="images/0b0f7cb7-91db-4c0b-9936-ac1ed5ac2bf4.jpg" alt="Lafayette Logo">
             </div>
-            <h1 class="loading-title">Lafayette</h1>
-            <h2 class="loading-subtitle">Kafeterija</h2>
             <div class="loading-dots">
                 <span></span>
                 <span></span>
@@ -33,22 +31,20 @@
 
     <div class="container" id="main-content">
         <header class="header">
-                            <div class="header-content">
+            <div class="header-content">
                 <div class="logo-container">
                     <div class="logo-dark">
-                        <img src="images/0b0f7cb7-91db-4c0b-9936-ac1ed5ac2bf4.jpg" alt="Lafayette Kafeterija Logo">
+                        <img src="images/0b0f7cb7-91db-4c0b-9936-ac1ed5ac2bf4.jpg" alt="Lafayette Logo">
                     </div>
                 </div>
-                <h1>Lafayette</h1>
-                <h2>Kafeterija</h2>
-                <p>Mirë se vini në menunë tonë digjitale</p>
             </div>
         </header>
 
+        <!-- Category Navigation -->
         <nav class="category-nav">
             <button class="nav-btn active" data-category="hot-drinks">
                 <div class="category-image">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3C!-- Coffee cup --%3E%3Crect x='25' y='45' width='35' height='40' rx='8' fill='%23FFFFFF' stroke='%23D4AF37' stroke-width='3'/%3E%3Cpath d='M60 55 Q70 55 70 65 Q70 75 60 75' stroke='%23D4AF37' stroke-width='3' fill='none'/%3E%3Crect x='20' y='85' width='45' height='4' rx='2' fill='%23D4AF37'/%3E%3C!-- Coffee liquid --%3E%3Crect x='28' y='50' width='29' height='32' rx='5' fill='%238B4513'/%3E%3C!-- Steam --%3E%3Cpath d='M35 30 Q37 20 35 35 M42 25 Q44 15 42 30 M49 30 Q51 20 49 35' stroke='%23FFF' stroke-width='3' fill='none' opacity='0.8'/%3E%3C!-- Coffee foam --%3E%3Cellipse cx='42' cy='52' rx='12' ry='3' fill='%23F5DEB3' opacity='0.9'/%3E%3C/svg%3E" alt="Hot Coffee">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='25' y='45' width='35' height='40' rx='8' fill='%23FFFFFF' stroke='%23D4AF37' stroke-width='3'/%3E%3Cpath d='M60 55 Q70 55 70 65 Q70 75 60 75' stroke='%23D4AF37' stroke-width='3' fill='none'/%3E%3Crect x='20' y='85' width='45' height='4' rx='2' fill='%23D4AF37'/%3E%3Crect x='28' y='50' width='29' height='32' rx='5' fill='%238B4513'/%3E%3Cpath d='M35 30 Q37 20 35 35 M42 25 Q44 15 42 30 M49 30 Q51 20 49 35' stroke='%23FFF' stroke-width='3' fill='none' opacity='0.8'/%3E%3Cellipse cx='42' cy='52' rx='12' ry='3' fill='%23F5DEB3' opacity='0.9'/%3E%3C/svg%3E" alt="Hot Coffee">
                 </div>
                 <span>PIJE TË NGROHTA</span>
             </button>
@@ -100,8 +96,7 @@
             <!-- Hot Drinks -->
             <section class="menu-category active" id="hot-drinks">
                 <div class="category-header">
-                    <i class="fas fa-mug-hot"></i>
-                    <h2>Pije të Ngrohta</h2>
+                    <h2>PIJE TË NGROHTA</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
@@ -210,8 +205,7 @@
             <!-- Carbonated Drinks -->
             <section class="menu-category" id="carbonated">
                 <div class="category-header">
-                    <i class="fas fa-bottle-water"></i>
-                    <h2>Pije të Gazuara</h2>
+                    <h2>PIJE TË GAZUARA</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
@@ -284,8 +278,7 @@
             <!-- Non-Carbonated Drinks -->
             <section class="menu-category" id="non-carbonated">
                 <div class="category-header">
-                    <i class="fas fa-glass-water"></i>
-                    <h2>Pije të Pa Gazuara</h2>
+                    <h2>PIJE TË PA GAZUARA</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
@@ -330,8 +323,7 @@
             <!-- Fresh Drinks -->
             <section class="menu-category" id="fresh">
                 <div class="category-header">
-                    <i class="fas fa-leaf"></i>
-                    <h2>Pije Freskuese</h2>
+                    <h2>PIJE FRESKUESE</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
@@ -388,8 +380,7 @@
             <!-- Desserts -->
             <section class="menu-category" id="desserts">
                 <div class="category-header">
-                    <i class="fas fa-ice-cream"></i>
-                    <h2>Embëlsira</h2>
+                    <h2>EMBËLSIRA</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
@@ -449,36 +440,36 @@
                         <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Milka</h3>
+                        <h3>Nutella</h3>
                         <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Banana Caramel</h3>
+                        <h3>Brownie</h3>
                         <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Trilëçe</h3>
-                        <span class="price">€2.00</span>
+                        <h3>Çokollatë</h3>
+                        <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Akullore Kugëll</h3>
-                        <span class="price">€0.90</span>
+                        <h3>Vanillë</h3>
+                        <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Gjysëm Porcioni Akullore</h3>
-                        <span class="price">€1.80</span>
+                        <h3>Luleshtrydhe</h3>
+                        <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Porcion Akullore</h3>
-                        <span class="price">€2.70</span>
+                        <h3>Krem Karamel</h3>
+                        <span class="price">€2.60</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Desert me Fruta</h3>
+                        <h3>Baklava Turke</h3>
                         <span class="price">€5.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Banana Split</h3>
-                        <span class="price">€4.00</span>
+                        <h3>Kadaif</h3>
+                        <span class="price">€0.90</span>
                     </div>
                 </div>
             </section>
@@ -486,40 +477,39 @@
             <!-- Alcoholic Drinks -->
             <section class="menu-category" id="alcoholic">
                 <div class="category-header">
-                    <i class="fas fa-wine-glass"></i>
-                    <h2>Pije Alkoholike</h2>
+                    <h2>PIJE ALKOHOLIKE</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
-                        <h3>Tequila</h3>
-                        <span class="price">€4.00</span>
+                        <h3>Raki Rrushi</h3>
+                        <span class="price">€3.50</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Jager</h3>
-                        <span class="price">€4.00</span>
+                        <h3>Raki Mani</h3>
+                        <span class="price">€3.50</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Jack Daniels</h3>
+                        <h3>Whiskey</h3>
                         <span class="price">€4.00</span>
                     </div>
                     <div class="menu-item">
                         <h3>Vodka</h3>
-                        <span class="price">€3.50</span>
-                    </div>
-                    <div class="menu-item">
-                        <h3>Gin Tonic</h3>
                         <span class="price">€4.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Alexandria</h3>
+                        <h3>Gin</h3>
                         <span class="price">€4.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Baileys</h3>
+                        <h3>Rum</h3>
                         <span class="price">€4.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Malibu <span class="variants">(Vishnje or Juice)</span></h3>
+                        <h3>Cognac</h3>
+                        <span class="price">€4.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <h3>Tequila</h3>
                         <span class="price">€4.00</span>
                     </div>
                 </div>
@@ -528,29 +518,28 @@
             <!-- Cocktails -->
             <section class="menu-category" id="cocktails">
                 <div class="category-header">
-                    <i class="fas fa-cocktail"></i>
-                    <h2>Cocktails</h2>
+                    <h2>COCKTAILS</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
-                        <h3>Lafayette Cocktail <span class="variants">(Pa Alkohol)</span></h3>
+                        <h3>Mojito</h3>
                         <span class="price">€5.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Mojito Virgin</h3>
-                        <span class="price">€5.00</span>
-                    </div>
-                    <div class="menu-item">
-                        <h3>Mojito Alkohol <span class="variants">(Strawberry)</span></h3>
+                        <h3>Pina Colada</h3>
                         <span class="price">€6.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Aperol Spritz</h3>
+                        <h3>Margarita</h3>
                         <span class="price">€6.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Strawberry Love</h3>
+                        <h3>Cosmopolitan</h3>
                         <span class="price">€6.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <h3>Long Island</h3>
+                        <span class="price">€8.00</span>
                     </div>
                     <div class="menu-item">
                         <h3>Sex on the Beach</h3>
@@ -558,19 +547,19 @@
                     </div>
                     <div class="menu-item">
                         <h3>Blue Lagoon</h3>
-                        <span class="price">€5.00</span>
-                    </div>
-                    <div class="menu-item">
-                        <h3>Pina Colada</h3>
-                        <span class="price">€5.00</span>
-                    </div>
-                    <div class="menu-item">
-                        <h3>Long Island</h3>
-                        <span class="price">€8.00</span>
-                    </div>
-                    <div class="menu-item">
-                        <h3>Margarita</h3>
                         <span class="price">€6.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <h3>Tequila Sunrise</h3>
+                        <span class="price">€6.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <h3>Bloody Mary</h3>
+                        <span class="price">€6.00</span>
+                    </div>
+                    <div class="menu-item">
+                        <h3>Daiquiri</h3>
+                        <span class="price">€5.00</span>
                     </div>
                 </div>
             </section>
@@ -578,35 +567,30 @@
             <!-- Beer -->
             <section class="menu-category" id="beer">
                 <div class="category-header">
-                    <i class="fas fa-beer"></i>
-                    <h2>Birra</h2>
+                    <h2>BIRRA</h2>
                 </div>
                 <div class="menu-grid">
                     <div class="menu-item">
-                        <h3>Peja</h3>
+                        <h3>Birra Korça</h3>
                         <span class="price">€2.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Lasko</h3>
-                        <span class="price">€2.50</span>
+                        <h3>Birra Tirana</h3>
+                        <span class="price">€2.00</span>
                     </div>
                     <div class="menu-item">
                         <h3>Heineken</h3>
                         <span class="price">€3.00</span>
                     </div>
                     <div class="menu-item">
-                        <h3>Tuborg</h3>
+                        <h3>Corona</h3>
                         <span class="price">€3.00</span>
                     </div>
                 </div>
             </section>
         </main>
-
-        <footer class="footer">
-            <p>© 2024 Menu Kafeterije - Faleminderit që na zgjodhët!</p>
-        </footer>
     </div>
-
+    
     <script src="script.js"></script>
 </body>
 </html> 
