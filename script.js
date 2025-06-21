@@ -1,472 +1,231 @@
-// Digital Menu JavaScript
+// Global variables
+let currentCategory = 'hot-drinks';
+
+// DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
-    // Loading screen animation
-    const loadingScreen = document.getElementById('loading-screen');
-    const mainContent = document.getElementById('main-content');
-    
-    // Show loading screen for 2 seconds then fade out
+    // Show loading screen for 2 seconds
     setTimeout(() => {
+        const loadingScreen = document.getElementById('loading-screen');
+        const mainContent = document.getElementById('main-content');
+        
         loadingScreen.classList.add('fade-out');
         mainContent.classList.add('show');
         
-        // Remove loading screen after fade animation
+        // Remove loading screen from DOM after animation
         setTimeout(() => {
             loadingScreen.style.display = 'none';
         }, 800);
     }, 2000);
-    // Get all navigation buttons and menu categories
+
+    // Initialize navigation
+    initializeNavigation();
+    
+    // Initialize mobile enhancements
+    initializeMobileEnhancements();
+    
+    // Initialize touch support
+    initializeTouchSupport();
+});
+
+// Initialize Navigation
+function initializeNavigation() {
     const navButtons = document.querySelectorAll('.nav-btn');
     const menuCategories = document.querySelectorAll('.menu-category');
-
-    // Function to show specific category
-    function showCategory(categoryId) {
-        // Hide all categories
-        menuCategories.forEach(category => {
-            category.classList.remove('active');
-        });
-
-        // Remove active class from all nav buttons
-        navButtons.forEach(btn => {
-            btn.classList.remove('active');
-        });
-
-        // Show selected category
-        const targetCategory = document.getElementById(categoryId);
-        const targetButton = document.querySelector(`[data-category="${categoryId}"]`);
-        
-        if (targetCategory && targetButton) {
-            targetCategory.classList.add('active');
-            targetButton.classList.add('active');
-            
-            // Smooth scroll to content
-            targetCategory.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
-        }
-    }
-
-    // Add click event listeners to navigation buttons
+    
     navButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const categoryId = this.getAttribute('data-category');
-            showCategory(categoryId);
+        button.addEventListener('click', () => {
+            const categoryId = button.getAttribute('data-category');
+            switchCategory(categoryId);
             
-            // Add click animation
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-        });
-    });
-
-    // Add hover effects to menu items
-    const menuItems = document.querySelectorAll('.menu-item');
-    menuItems.forEach(item => {
-        item.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateX(5px) scale(1.02)';
-        });
-        
-        item.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateX(5px)';
-        });
-    });
-
-    // Enhanced mobile navigation with horizontal scroll and touch support
-    let touchStartX = 0;
-    let touchEndX = 0;
-    let touchStartY = 0;
-    let touchEndY = 0;
-    let isScrolling = false;
-    
-    const categoryNav = document.querySelector('.category-nav');
-    
-    // Enhanced touch events specifically for category navigation
-    categoryNav.addEventListener('touchstart', function(e) {
-        touchStartX = e.changedTouches[0].clientX;
-        touchStartY = e.changedTouches[0].clientY;
-        isScrolling = false;
-    }, { passive: true });
-    
-    categoryNav.addEventListener('touchmove', function(e) {
-        if (!touchStartX || !touchStartY) return;
-        
-        const touchMoveX = e.changedTouches[0].clientX;
-        const touchMoveY = e.changedTouches[0].clientY;
-        
-        const diffX = Math.abs(touchStartX - touchMoveX);
-        const diffY = Math.abs(touchStartY - touchMoveY);
-        
-        // Enable smooth horizontal scrolling
-        if (diffX > diffY && diffX > 10) {
-            isScrolling = true;
-        }
-    }, { passive: true });
-    
-    categoryNav.addEventListener('touchend', function(e) {
-        if (!isScrolling) {
-            touchEndX = e.changedTouches[0].clientX;
-            touchEndY = e.changedTouches[0].clientY;
-            handleCategorySwipe();
-        }
-        
-        // Reset values
-        touchStartX = 0;
-        touchStartY = 0;
-        touchEndX = 0;
-        touchEndY = 0;
-        isScrolling = false;
-    }, { passive: true });
-
-    function handleCategorySwipe() {
-        const swipeThreshold = 80;
-        const verticalThreshold = 50;
-        const difference = touchStartX - touchEndX;
-
-        // Ensure it's primarily a horizontal swipe
-        if (Math.abs(touchEndY - touchStartY) > verticalThreshold) return;
-
-        if (Math.abs(difference) > swipeThreshold) {
-            const currentActive = document.querySelector('.nav-btn.active');
-            const currentIndex = Array.from(navButtons).indexOf(currentActive);
-            
-            if (difference > 0 && currentIndex < navButtons.length - 1) {
-                // Swipe left - next category
-                navButtons[currentIndex + 1].click();
-                addHapticFeedback();
-                scrollToCenterButton(navButtons[currentIndex + 1]);
-            } else if (difference < 0 && currentIndex > 0) {
-                // Swipe right - previous category
-                navButtons[currentIndex - 1].click();
-                addHapticFeedback();
-                scrollToCenterButton(navButtons[currentIndex - 1]);
+            // Add haptic feedback on mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
             }
-        }
-    }
+        });
+    });
     
-    function scrollToCenterButton(button) {
-        setTimeout(() => {
-            button.scrollIntoView({ 
-                behavior: 'smooth', 
+    // Show initial category
+    showCategory(currentCategory);
+}
+
+// Switch Category Function
+function switchCategory(categoryId) {
+    if (categoryId === currentCategory) return;
+    
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const menuCategories = document.querySelectorAll('.menu-category');
+    
+    // Update navigation buttons
+    navButtons.forEach(btn => {
+        if (btn.getAttribute('data-category') === categoryId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Update menu categories
+    menuCategories.forEach(category => {
+        if (category.id === categoryId) {
+            category.classList.add('active');
+        } else {
+            category.classList.remove('active');
+        }
+    });
+    
+    currentCategory = categoryId;
+    
+    // Scroll to top of menu content
+    const menuContent = document.querySelector('.menu-content');
+    if (menuContent) {
+        menuContent.scrollTop = 0;
+    }
+}
+
+// Show Category Function
+function showCategory(categoryId) {
+    const menuCategories = document.querySelectorAll('.menu-category');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    
+    menuCategories.forEach(category => {
+        if (category.id === categoryId) {
+            category.classList.add('active');
+        } else {
+            category.classList.remove('active');
+        }
+    });
+    
+    navButtons.forEach(btn => {
+        if (btn.getAttribute('data-category') === categoryId) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+}
+
+// Initialize Mobile Enhancements
+function initializeMobileEnhancements() {
+    // Prevent zoom on double tap
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Optimize scrolling performance
+    const scrollElements = document.querySelectorAll('.category-nav, .menu-content');
+    scrollElements.forEach(element => {
+        element.style.webkitOverflowScrolling = 'touch';
+    });
+    
+    // Add scroll indicators for navigation
+    const categoryNav = document.querySelector('.category-nav');
+    if (categoryNav) {
+        addScrollIndicators(categoryNav);
+    }
+}
+
+// Initialize Touch Support
+function initializeTouchSupport() {
+    const categoryNav = document.querySelector('.category-nav');
+    if (!categoryNav) return;
+    
+    let isScrolling = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    
+    categoryNav.addEventListener('touchstart', (e) => {
+        isScrolling = true;
+        startX = e.touches[0].pageX - categoryNav.offsetLeft;
+        scrollLeft = categoryNav.scrollLeft;
+    }, { passive: true });
+    
+    categoryNav.addEventListener('touchmove', (e) => {
+        if (!isScrolling) return;
+        e.preventDefault();
+        const x = e.touches[0].pageX - categoryNav.offsetLeft;
+        const walk = (x - startX) * 2;
+        categoryNav.scrollLeft = scrollLeft - walk;
+    });
+    
+    categoryNav.addEventListener('touchend', () => {
+        isScrolling = false;
+        
+        // Snap to nearest button
+        const buttons = categoryNav.querySelectorAll('.nav-btn');
+        const navRect = categoryNav.getBoundingClientRect();
+        const center = navRect.left + navRect.width / 2;
+        
+        let closestButton = null;
+        let closestDistance = Infinity;
+        
+        buttons.forEach(button => {
+            const buttonRect = button.getBoundingClientRect();
+            const buttonCenter = buttonRect.left + buttonRect.width / 2;
+            const distance = Math.abs(center - buttonCenter);
+            
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestButton = button;
+            }
+        });
+        
+        if (closestButton) {
+            closestButton.scrollIntoView({
+                behavior: 'smooth',
                 block: 'nearest',
                 inline: 'center'
             });
-        }, 100);
-    }
-    
-    function addHapticFeedback() {
-        if (navigator.vibrate) {
-            navigator.vibrate([15]);
         }
+    }, { passive: true });
+}
+
+// Add Scroll Indicators
+function addScrollIndicators(element) {
+    // Check if content is scrollable
+    function updateScrollIndicators() {
+        const canScrollLeft = element.scrollLeft > 0;
+        const canScrollRight = element.scrollLeft < (element.scrollWidth - element.clientWidth);
+        
+        // Add/remove scroll indicators
+        element.classList.toggle('can-scroll-left', canScrollLeft);
+        element.classList.toggle('can-scroll-right', canScrollRight);
     }
     
-    // Auto-scroll active button into view on click
-    navButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            scrollToCenterButton(this);
-        });
+    element.addEventListener('scroll', updateScrollIndicators, { passive: true });
+    
+    // Initial check
+    setTimeout(updateScrollIndicators, 100);
+    
+    // Check on resize
+    window.addEventListener('resize', updateScrollIndicators, { passive: true });
+}
+
+// Utility Functions
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+}
+
+function isIOSDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+// Performance optimizations
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        // Register service worker for better performance (optional)
+        console.log('Service Worker supported');
     });
-    
-    // Add mobile-specific features
-    function initMobileFeatures() {
-        // Add touch hint for first-time mobile users
-        if (window.innerWidth <= 768 && 'ontouchstart' in window) {
-            const categoryNav = document.querySelector('.category-nav');
-            const hint = document.createElement('div');
-            hint.className = 'mobile-hint';
-            hint.innerHTML = '← Scroll to see more categories →';
-            hint.style.cssText = `
-                position: absolute;
-                bottom: -25px;
-                left: 50%;
-                transform: translateX(-50%);
-                font-size: 0.7rem;
-                color: #7f8c8d;
-                background: rgba(255,255,255,0.9);
-                padding: 2px 8px;
-                border-radius: 10px;
-                white-space: nowrap;
-                pointer-events: none;
-                opacity: 0.8;
-                animation: fadeInOut 3s ease-in-out;
-            `;
-            
-            categoryNav.style.position = 'relative';
-            categoryNav.appendChild(hint);
-            
-            // Remove hint after 3 seconds
-            setTimeout(() => {
-                if (hint.parentNode) {
-                    hint.remove();
-                }
-            }, 3000);
-        }
-    }
-    
-    // Initialize mobile features
-    setTimeout(initMobileFeatures, 500);
+}
 
-    // Add search functionality
-    function addSearchFeature() {
-        const searchContainer = document.createElement('div');
-        searchContainer.className = 'search-container';
-        searchContainer.innerHTML = `
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="menu-search" placeholder="Kërkoni produkte...">
-                <button id="clear-search" class="clear-btn" style="display: none;">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `;
-
-        // Insert search box after header
-        const header = document.querySelector('.header');
-        header.parentNode.insertBefore(searchContainer, header.nextSibling);
-
-        const searchInput = document.getElementById('menu-search');
-        const clearButton = document.getElementById('clear-search');
-        
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase().trim();
-            
-            if (searchTerm === '') {
-                clearButton.style.display = 'none';
-                showAllItems();
-                return;
-            }
-
-            clearButton.style.display = 'block';
-            filterMenuItems(searchTerm);
-        });
-
-        clearButton.addEventListener('click', function() {
-            searchInput.value = '';
-            clearButton.style.display = 'none';
-            showAllItems();
-            searchInput.focus();
-        });
-    }
-
-    function filterMenuItems(searchTerm) {
-        const allItems = document.querySelectorAll('.menu-item');
-        let hasResults = false;
-
-        // Show all categories first
-        menuCategories.forEach(category => {
-            category.style.display = 'block';
-        });
-
-        allItems.forEach(item => {
-            const itemName = item.querySelector('h3').textContent.toLowerCase();
-            const parentCategory = item.closest('.menu-category');
-            
-            if (itemName.includes(searchTerm)) {
-                item.style.display = 'flex';
-                hasResults = true;
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        // Hide categories with no visible items
-        menuCategories.forEach(category => {
-            const visibleItems = category.querySelectorAll('.menu-item[style*="flex"]');
-            if (visibleItems.length === 0) {
-                category.style.display = 'none';
-            }
-        });
-
-        // Show "no results" message if needed
-        showNoResultsMessage(!hasResults, searchTerm);
-    }
-
-    function showAllItems() {
-        const allItems = document.querySelectorAll('.menu-item');
-        allItems.forEach(item => {
-            item.style.display = 'flex';
-        });
-
-        menuCategories.forEach(category => {
-            category.style.display = 'none';
-        });
-
-        // Show active category
-        const activeCategory = document.querySelector('.menu-category.active');
-        if (activeCategory) {
-            activeCategory.style.display = 'block';
-        }
-
-        // Remove no results message
-        const noResultsMsg = document.querySelector('.no-results');
-        if (noResultsMsg) {
-            noResultsMsg.remove();
-        }
-    }
-
-    function showNoResultsMessage(show, searchTerm) {
-        const existingMsg = document.querySelector('.no-results');
-        if (existingMsg) {
-            existingMsg.remove();
-        }
-
-        if (show) {
-            const noResultsDiv = document.createElement('div');
-            noResultsDiv.className = 'no-results';
-            noResultsDiv.innerHTML = `
-                <div class="no-results-content">
-                    <i class="fas fa-search"></i>
-                    <h3>Nuk u gjetën rezultate</h3>
-                    <p>Nuk u gjet asnjë produkt për "${searchTerm}"</p>
-                    <button onclick="document.getElementById('menu-search').value=''; document.getElementById('menu-search').dispatchEvent(new Event('input'));">
-                        Pastro kërkimin
-                    </button>
-                </div>
-            `;
-            document.querySelector('.menu-content').appendChild(noResultsDiv);
-        }
-    }
-
-    // Initialize search feature
-    addSearchFeature();
-
-    // Add keyboard navigation
-    document.addEventListener('keydown', function(e) {
-        const currentActive = document.querySelector('.nav-btn.active');
-        const currentIndex = Array.from(navButtons).indexOf(currentActive);
-
-        switch(e.key) {
-            case 'ArrowLeft':
-                if (currentIndex > 0) {
-                    navButtons[currentIndex - 1].click();
-                }
-                break;
-            case 'ArrowRight':
-                if (currentIndex < navButtons.length - 1) {
-                    navButtons[currentIndex + 1].click();
-                }
-                break;
-        }
-    });
-
-    // Add loading animation for slow connections
-    function showLoadingAnimation() {
-        const loadingDiv = document.createElement('div');
-        loadingDiv.className = 'loading-overlay';
-        loadingDiv.innerHTML = `
-            <div class="loading-content">
-                <div class="loading"></div>
-                <p>Duke ngarkuar menunë...</p>
-            </div>
-        `;
-        document.body.appendChild(loadingDiv);
-
-        // Remove loading after content is ready
-        setTimeout(() => {
-            loadingDiv.remove();
-        }, 1000);
-    }
-
-    // Performance optimization: Lazy load images if added later
-    function lazyLoadImages() {
-        const images = document.querySelectorAll('img[data-src]');
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    img.src = img.dataset.src;
-                    img.classList.remove('lazy');
-                    imageObserver.unobserve(img);
-                }
-            });
-        });
-
-        images.forEach(img => imageObserver.observe(img));
-    }
-
-    // Initialize lazy loading if supported
-    if ('IntersectionObserver' in window) {
-        lazyLoadImages();
-    }
-
-    // Add smooth animations when scrolling
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observe menu items for animation
-    menuItems.forEach(item => {
-        item.style.opacity = '0';
-        item.style.transform = 'translateY(20px)';
-        item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(item);
-    });
-
-    // Add print functionality
-    function addPrintButton() {
-        const printBtn = document.createElement('button');
-        printBtn.className = 'print-btn';
-        printBtn.innerHTML = '<i class="fas fa-print"></i> Printo Menunë';
-        printBtn.onclick = () => window.print();
-        
-        document.querySelector('.footer').appendChild(printBtn);
-    }
-
-    addPrintButton();
-
-    // Mobile-specific enhancements
-    function optimizeForMobile() {
-        // Add mobile-specific class to body
-        if (window.innerWidth <= 768) {
-            document.body.classList.add('mobile-device');
-        }
-        
-        // Prevent zoom on double tap for specific elements
-        const preventZoom = document.querySelectorAll('.nav-btn, .menu-item');
-        preventZoom.forEach(element => {
-            element.addEventListener('touchend', function(e) {
-                e.preventDefault();
-                this.click();
-            });
-        });
-        
-        // Optimize scroll behavior for mobile
-        document.addEventListener('touchmove', function(e) {
-            if (e.target.closest('.nav-btn') || e.target.closest('.menu-item')) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-        
-        // Add haptic feedback for iOS devices
-        if ('vibrate' in navigator) {
-            navButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    navigator.vibrate(50); // Short vibration
-                });
-            });
-        }
-    }
-    
-    // Initialize mobile optimizations
-    optimizeForMobile();
-    
-    // Re-optimize on window resize
-    window.addEventListener('resize', optimizeForMobile);
-
-    // Initialize the first category as active
-    if (navButtons.length > 0) {
-        navButtons[0].click();
-    }
-
-    console.log('Lafayette Digital Menu initialized successfully! 🍕☕');
-}); 
+// Smooth scroll polyfill for older browsers
+if (!('scrollBehavior' in document.documentElement.style)) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/gh/iamdustan/smoothscroll@master/src/smoothscroll.js';
+    document.head.appendChild(script);
+}
