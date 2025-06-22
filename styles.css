@@ -52,8 +52,8 @@ body {
     /* Removed complex filters for better mobile compatibility */
     animation: logoFadeIn 1.5s ease-in-out;
     object-fit: contain;
-    width: 250px;
-    height: 180px;
+    width: 700px;
+    height: 500px;
     background: transparent;
     /* Remove all white outlines and glows */
 }
@@ -65,8 +65,8 @@ body {
     }
     
     .logo-animation img {
-        width: 200px;
-        height: 140px;
+        width: 560px;
+        height: 400px;
     }
 }
 
@@ -76,8 +76,8 @@ body {
     }
     
     .logo-animation img {
-        width: 180px;
-        height: 120px;
+        width: 360px !important;
+        height: 260px !important;
         /* Remove white outline on mobile */
     }
 }
@@ -526,8 +526,8 @@ body {
     
     .logo-animation img {
         /* Remove complex filters for better mobile compatibility */
-        width: 180px !important;
-        height: 120px !important;
+        width: 360px !important;
+        height: 260px !important;
     }
     
     .category-nav {
