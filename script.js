@@ -1,5 +1,5 @@
 // Global variables
-let currentCategory = 'hot-drinks';
+let currentCategory = null; // No category selected initially
 
 // DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
@@ -44,13 +44,13 @@ function initializeNavigation() {
         });
     });
     
-    // Show initial category
-    showCategory(currentCategory);
+    // Don't show any category initially - let user choose
 }
 
 // Switch Category Function
 function switchCategory(categoryId) {
-    if (categoryId === currentCategory) return;
+    // Allow switching to the same category to re-trigger animations
+    // if (categoryId === currentCategory) return;
     
     const navButtons = document.querySelectorAll('.nav-btn');
     const menuCategories = document.querySelectorAll('.menu-category');
