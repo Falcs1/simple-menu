@@ -163,8 +163,8 @@ body {
 }
 
 .logo-dark img {
-    width: 150px;
-    height: 110px;
+    width: 375px;
+    height: 275px;
     object-fit: contain;
     animation: logoFloat 3s ease-in-out infinite;
 }
@@ -437,8 +437,8 @@ body {
     
     .logo-dark img {
         /* Remove complex filters for better mobile compatibility */
-        width: 120px !important;
-        height: 85px !important;
+        width: 300px !important;
+        height: 225px !important;
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
@@ -517,8 +517,8 @@ body {
     
     .logo-dark img {
         /* Remove complex filters for better mobile compatibility */
-        width: 100px !important;
-        height: 70px !important;
+        width: 250px !important;
+        height: 188px !important;
         display: block !important;
         opacity: 1 !important;
         visibility: visible !important;
