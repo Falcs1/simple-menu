@@ -1,5 +1,6 @@
 // Global variables
 let currentCategory = null; // No category selected initially
+let isInCategoryView = false; // Track if we're viewing a specific category
 
 // DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
@@ -25,6 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize touch support
     initializeTouchSupport();
+    
+    // Initialize back button
+    initializeBackButton();
 });
 
 // Initialize Navigation
@@ -35,7 +39,7 @@ function initializeNavigation() {
     navButtons.forEach(button => {
         button.addEventListener('click', () => {
             const categoryId = button.getAttribute('data-category');
-            switchCategory(categoryId);
+            showCategoryPage(categoryId);
             
             // Add haptic feedback on mobile
             if (navigator.vibrate) {
@@ -44,64 +48,114 @@ function initializeNavigation() {
         });
     });
     
-    // Don't show any category initially - let user choose
+    // Don't show any category initially - show categories list
+    showCategoriesList();
 }
 
-// Switch Category Function
-function switchCategory(categoryId) {
-    // Allow switching to the same category to re-trigger animations
-    // if (categoryId === currentCategory) return;
-    
-    const navButtons = document.querySelectorAll('.nav-btn');
-    const menuCategories = document.querySelectorAll('.menu-category');
-    
-    // Update navigation buttons
-    navButtons.forEach(btn => {
-        if (btn.getAttribute('data-category') === categoryId) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-    
-    // Update menu categories
-    menuCategories.forEach(category => {
-        if (category.id === categoryId) {
-            category.classList.add('active');
-        } else {
-            category.classList.remove('active');
-        }
-    });
-    
-    currentCategory = categoryId;
-    
-    // Scroll to top of menu content
-    const menuContent = document.querySelector('.menu-content');
-    if (menuContent) {
-        menuContent.scrollTop = 0;
+// Initialize Back Button
+function initializeBackButton() {
+    const backBtn = document.getElementById('back-btn');
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            showCategoriesList();
+            
+            // Add haptic feedback on mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        });
     }
 }
 
-// Show Category Function
-function showCategory(categoryId) {
+// Show Categories List (main page)
+function showCategoriesList() {
+    const categoryNav = document.querySelector('.category-nav');
+    const menuContent = document.querySelector('.menu-content');
+    const backBtn = document.getElementById('back-btn');
     const menuCategories = document.querySelectorAll('.menu-category');
-    const navButtons = document.querySelectorAll('.nav-btn');
     
+    // Hide back button
+    if (backBtn) {
+        backBtn.classList.remove('show');
+    }
+    
+    // Show category navigation
+    if (categoryNav) {
+        categoryNav.classList.remove('hidden');
+    }
+    
+    // Hide all menu categories
     menuCategories.forEach(category => {
-        if (category.id === categoryId) {
-            category.classList.add('active');
-        } else {
-            category.classList.remove('active');
-        }
+        category.classList.remove('active');
     });
     
+    // Hide menu content
+    if (menuContent) {
+        menuContent.style.display = 'none';
+    }
+    
+    isInCategoryView = false;
+    currentCategory = null;
+    
+    // Remove active state from all nav buttons
+    const navButtons = document.querySelectorAll('.nav-btn');
     navButtons.forEach(btn => {
-        if (btn.getAttribute('data-category') === categoryId) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
+        btn.classList.remove('active');
     });
+}
+
+// Show Category Page
+function showCategoryPage(categoryId) {
+    const categoryNav = document.querySelector('.category-nav');
+    const menuContent = document.querySelector('.menu-content');
+    const backBtn = document.getElementById('back-btn');
+    const menuCategories = document.querySelectorAll('.menu-category');
+    const targetCategory = document.getElementById(categoryId);
+    
+    if (!targetCategory) return;
+    
+    // Show back button
+    if (backBtn) {
+        backBtn.classList.add('show');
+    }
+    
+    // Hide category navigation
+    if (categoryNav) {
+        categoryNav.classList.add('hidden');
+    }
+    
+    // Show menu content
+    if (menuContent) {
+        menuContent.style.display = 'block';
+    }
+    
+    // Hide all categories first
+    menuCategories.forEach(category => {
+        category.classList.remove('active');
+    });
+    
+    // Show selected category
+    setTimeout(() => {
+        targetCategory.classList.add('active');
+    }, 100);
+    
+    // Scroll to top of menu content
+    if (menuContent) {
+        menuContent.scrollTop = 0;
+    }
+    
+    isInCategoryView = true;
+    currentCategory = categoryId;
+}
+
+// Legacy function for backward compatibility
+function switchCategory(categoryId) {
+    showCategoryPage(categoryId);
+}
+
+// Show Category Function (legacy)
+function showCategory(categoryId) {
+    showCategoryPage(categoryId);
 }
 
 // Initialize Mobile Enhancements
@@ -200,19 +254,29 @@ function addScrollIndicators(element) {
     
     // Initial check
     setTimeout(updateScrollIndicators, 100);
-    
-    // Check on resize
-    window.addEventListener('resize', updateScrollIndicators, { passive: true });
 }
 
 // Utility Functions
 function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 function isIOSDevice() {
     return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+
+// Handle browser back button
+window.addEventListener('popstate', function(event) {
+    if (isInCategoryView) {
+        showCategoriesList();
+    }
+});
+
+// Add state to history when showing category page
+function addToHistory(categoryId) {
+    if (history.pushState) {
+        history.pushState({category: categoryId}, '', `#${categoryId}`);
+    }
 }
 
 // Performance optimizations
